@@ -13,4 +13,4 @@ async function fetchImages(){
     return response.data.hits;
 };
 
-export default { galleryItems, fetchImages };
+export default { galleryEl, fetchImages };

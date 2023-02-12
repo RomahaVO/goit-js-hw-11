@@ -28,15 +28,15 @@ function onSubmit (e) {
         return;
         }        
         if (items.status === 404){ 
-            throw new Error("Not found country")}
+            throw new Error(`Not found ${searchImg.galleryEl.query} `)}
         
         galleryImages.innerHTML = "";
         searchImg.galleryEl.imgPage += 1;
         console.log(items);
         createImageGallery(items);
-        Notiflix.Notify.success(`Hooray! We found ${form.elements.searchQuery.value} images.`)
+        Notiflix.Notify.success(`Hooray! We found ${searchImg.galleryEl.query} images.`)
         })
-    .catch(error)
+    .catch(onError)
     .finally(form.reset());
 
     // cleanerMarkup(galleryImages);
@@ -95,6 +95,10 @@ function cleanerMarkup(element) {
     return  element.innerHTML = '';
 };
 
+
+function onError(err) {
+    console.error(err);
+};
 // let infScroll = new InfiniteScroll( galleryImages, {
 //     path: '.pagination__next',
 //     append: '.post',

@@ -16,28 +16,31 @@ function onSubmit (e) {
     e.preventDefault();
     const form = e.currentTarget;
     searchImg.galleryEl.query = form.elements.searchQuery.value.trim();
-
     loadMoreBtn.classList.remove('hidden');
 
-    if(searchImg.galleryEl.query === ''){
+
+    searchImg.fetchImages(searchImg.galleryEl.query)
+    .then(items=>{
+        if (items.length === 0 || searchImg.galleryEl.query === ''){
+
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        loadMoreBtn.classList.add('hidden');
+        return;
+        }        
+        if (items.status === 404){ 
+            throw new Error("Not found country")}
+        
         galleryImages.innerHTML = "";
-        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-        loadMoreBtn.classList.add('hidden');
-        return;
-    };
-
-    searchImg.fetchImages(searchImg.galleryEl.query).then(items=>{
-        if (items.length === 0){
-        imagesList.innerHTML = "";
-        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-        loadMoreBtn.classList.add('hidden');
-        return;
-        }
+        searchImg.galleryEl.imgPage += 1;
         console.log(items);
-    });
+        createImageGallery(items);
+        Notiflix.Notify.success(`Hooray! We found ${form.elements.searchQuery.value} images.`)
+        })
+    .catch(error)
+    .finally(form.reset());
 
-    cleanerMarkup(galleryImages);
-    searchImg.galleryEl.imgPage = 1;
+    // cleanerMarkup(galleryImages);
+    // searchImg.galleryEl.imgPage = 1;
     loadMoreBtnClick();
     
 };

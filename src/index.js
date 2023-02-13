@@ -80,10 +80,13 @@ function loadMoreBtnClick(){
         gallery.refresh();
         loadMoreBtn.disabled=false;
         loadMoreBtn.textContent='Load more';
-    }).catch(error=>{
+        
+    if(searchImg.data.hits.length  < 40){ 
+        //if(total ===)       
         Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-        loadMoreBtn.classList.add('hidden');
-    })
+        loadMoreBtn.classList.remove('hidden');
+    };
+    }).catch(err)
 };
 
 

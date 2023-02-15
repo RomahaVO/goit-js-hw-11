@@ -71,22 +71,24 @@ galleryImages.insertAdjacentHTML("beforeend", markup);
 
 
 function loadMoreBtnClick(){
+
     loadMoreBtn.disabled=true;
     loadMoreBtn.textContent='Loading...';
-    searchImg.fetchImages(searchImg.galleryEl.query).then(items=>{
-        // searchImg.galleryEl.imgPage += 1;
-        console.log(items);
+    let searchArr = searchImg.fetchImages(searchImg.galleryEl.query);
+    searchArr.then(items=>{
+        if(searchArr.hits === [])  {
+            // (searchArr.length  < 40)
+            // (searchArr.hits  ===  {hits:[]})
+            Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+            loadMoreBtn.classList.add('hidden');
+            return;
+        };
         createImageGallery(items);
         gallery.refresh();
         loadMoreBtn.disabled=false;
         loadMoreBtn.textContent='Load more';
         
-    if(searchImg.data.hits.length  < 40){ 
-        //if(total ===)       
-        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-        loadMoreBtn.classList.remove('hidden');
-    };
-    }).catch(err)
+    }).catch(onError);
 };
 
 

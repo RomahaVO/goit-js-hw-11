@@ -76,20 +76,22 @@ function loadMoreBtnClick(){
     loadMoreBtn.textContent='Loading...';
     let searchArr = searchImg.fetchImages(searchImg.galleryEl.query);
     searchArr.then(items=>{
-        if(searchArr.hits === [])  {
-            // if(searchArr.hits !== [])  <--якщо так все працює
-            // (searchArr.length  < 40)
-            // (searchArr.hits  ===  {hits:[]})
-            Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-            loadMoreBtn.classList.add('hidden');
+        // if(searchArr.hits === [])  {
+        //     // if(searchArr.hits !== [])  <--якщо так все працює
+        //     // (searchArr.length  < 40)
+        //     // (searchArr.hits  ===  {hits:[]})
+        //     Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+        //     loadMoreBtn.classList.add('hidden');
 
-        };
+        // };
         createImageGallery(items);
         gallery.refresh();
         loadMoreBtn.disabled=false;
         loadMoreBtn.textContent='Load more';
         
-    }).catch(onError);
+    }).catch(err =>{
+        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+        loadMoreBtn.classList.add('hidden');});
 };
 
 
